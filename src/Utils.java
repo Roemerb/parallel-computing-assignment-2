@@ -56,4 +56,22 @@ public class Utils {
         }
         System.out.println();
     }
+
+    public static int[][] divideArray(int[] arr, int slices)
+    {
+        int sliceSize = (int)Math.floor((double)arr.length / slices);
+        int[][] output = new int[slices][];
+
+        for (int i = 0; i < slices; ++i)
+        {
+            int start = i * sliceSize;
+            int length = Math.min(arr.length - start, sliceSize);
+
+            int[] temp = new int[length];
+            System.arraycopy(arr, start, temp, 0, length);
+            output[i] = temp;
+        }
+
+        return output;
+    }
 }
