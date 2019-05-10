@@ -1,5 +1,16 @@
+/**
+ * HeapSortSerial is a simple implementation of the Heap Sort algorithm, directly implemented from the pseudocode.
+ *
+ * @class HeapSortSerial
+ */
 public class HeapSortSerial {
 
+    /**
+     * The main sorting method
+     *
+     * @param arr The array to be sorted
+     * @return
+     */
     public int[] sort(int[] arr)
     {
         int n = arr.length;
@@ -18,6 +29,14 @@ public class HeapSortSerial {
         return arr;
     }
 
+    /**
+     * Creates a sorted heap of arr
+     *
+     * @param arr
+     * @param n
+     * @param i
+     * @return
+     */
     public int[] heapify(int arr[], int n, int i)
     {
         int max = i;
@@ -39,29 +58,19 @@ public class HeapSortSerial {
         return arr;
     }
 
+    /**
+     * Simple swap method to swap 2 elements in an array
+     *
+     * @param arr
+     * @param i
+     * @param j
+     * @return
+     */
     private int[] swap(int arr[], int i, int j)
     {
         int temp = arr[j];
         arr[j] = arr[i];
         arr[i] = temp;
         return arr;
-    }
-
-    /* A utility function to print array of size n */
-    static void printArray(int arr[])
-    {
-        int n = arr.length;
-        for (int i=0; i<n; ++i)
-            System.out.print(arr[i]+" ");
-        System.out.println();
-    }
-
-    public static void main(String[] args)
-    {
-        int arr[] = {12, 11, 13, 5, 6, 7};
-
-        HeapSortSerial hs = new HeapSortSerial();
-
-        printArray(hs.sort(arr));
     }
 }
