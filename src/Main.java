@@ -9,6 +9,9 @@ public class Main {
         testWithNElementsSerial(100000);
         testWithNElementsSerial(1000000);
         testWithNElementsSerial(10000000);
+
+        HeapSortParallel hsp = new HeapSortParallel();
+        hsp.sort(Utils.createTestSet(100,100));
     }
 
     public static void testWithNElementsSerial(int n)
@@ -20,7 +23,7 @@ public class Main {
         int[] arr = Utils.createTestSet(n, Main.MAX_VALUE);
 
         long startTime = System.nanoTime();
-        arr = hss.sort(arr);
+        hss.sort(arr);
         long endTime = System.nanoTime();
         long totalTimeMs = ((endTime - startTime)/1000);
         System.out.println("Took: " + totalTimeMs + " microseconds (" + (totalTimeMs/1000) + " milliseconds)");
