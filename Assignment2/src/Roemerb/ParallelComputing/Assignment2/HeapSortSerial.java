@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment2;
+
 /**
  * HeapSortSerial is a simple implementation of the Heap Sort algorithm, directly implemented from the pseudocode.
  *

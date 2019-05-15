@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment3;
+
 public class ArrayContainer implements Comparable<ArrayContainer>
 {
     int[] arr;

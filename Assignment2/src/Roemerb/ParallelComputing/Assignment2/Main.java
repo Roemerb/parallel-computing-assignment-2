@@ -1,6 +1,8 @@
+package Roemerb.ParallelComputing.Assignment2;
+
 public class Main {
 
-    public static final int MAX_VALUE = 5000000;
+    public static final int MAX_VALUE = 10000000;
 
     public static void main(String[] args) throws Exception {
         System.out.println("Testing serial implementation");
@@ -9,6 +11,7 @@ public class Main {
         testWithNElementsSerial(10000);
         testWithNElementsSerial(100000);
         testWithNElementsSerial(1000000);
+        testWithNElementsSerial(5000000);
         testWithNElementsSerial(10000000);
 
         System.out.println("Testing serial implementation");
@@ -17,6 +20,7 @@ public class Main {
         testWithNElementsParallel(10000);
         testWithNElementsParallel(100000);
         testWithNElementsParallel(1000000);
+        testWithNElementsParallel(5000000);
         testWithNElementsParallel(10000000);
     }
 

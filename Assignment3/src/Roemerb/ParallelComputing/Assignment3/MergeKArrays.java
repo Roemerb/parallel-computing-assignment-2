@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment3;
+
 import java.lang.reflect.Array;
 import java.util.PriorityQueue;
 

@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment2;
+
 import java.util.concurrent.*;
 
 public class HeapSortParallel extends HeapSortSerial {
@@ -6,8 +8,6 @@ public class HeapSortParallel extends HeapSortSerial {
     private int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
 
     public int[][] sortedChunks;
-    public int[] finalSortedArr;
-    public Thread[] threads;
 
     public synchronized void complete(int coreId, int[] result)
     {
@@ -29,13 +29,11 @@ public class HeapSortParallel extends HeapSortSerial {
             @Override
             protected void afterExecute(Runnable r, Throwable t) {
                 super.afterExecute(r, t);
-//                System.out.println("Thread has finished!");
             }
 
             @Override
             protected void terminated() {
                 super.terminated();
-//                System.out.println("All threads have finished");
             }
         };
 
@@ -46,7 +44,6 @@ public class HeapSortParallel extends HeapSortSerial {
             int finalI = i;
             sortedChunks[finalI] = new int[divided[finalI].length];
             exec.execute(() -> {
-//                System.out.println("Starting to process thread " + finalI);
                 HeapSortSerial hss = new HeapSortSerial();
                 complete(finalI, hss.sort(divided[finalI]));
             });

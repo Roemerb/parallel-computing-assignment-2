@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment2;
+
 import java.util.Random;
 
 public class Utils {
