@@ -12,7 +12,7 @@ public class Consumer implements Runnable {
             try {
                 SortingJob sj = queue.take();
                 if (sj.kill) {
-                    System.out.println("Got KILL signal, dying");
+                    //System.out.println("Got KILL signal, dying");
                     break;
                 }
                 int[] arr = sj.slice;
@@ -24,11 +24,11 @@ public class Consumer implements Runnable {
     }
 
     private void process(int[] take) {
-        System.out.println("[Consumer] Taken " + take.length + " elements to sort");
+        //System.out.println("[Consumer] Taken " + take.length + " elements to sort");
 
         HeapSortSerial hss = new HeapSortSerial();
         int[] sorted = hss.sort(take);
-        System.out.println("[Consumer] Done");
+        //System.out.println("[Consumer] Done");
 
         HeapSortParallel.complete(sorted);
     }

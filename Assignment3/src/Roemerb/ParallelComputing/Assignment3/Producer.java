@@ -7,10 +7,11 @@ public class Producer implements Runnable {
 
     private final BlockingQueue<SortingJob> queue;
     private final int[] arr;
-    private final int SLICE_SIZE = 10000;
+    private int SLICE_SIZE;
 
     @Override
     public void run() {
+        SLICE_SIZE = (int) Math.ceil(arr.length/Runtime.getRuntime().availableProcessors());
         try {
             process();
         } catch (InterruptedException e) {
@@ -23,11 +24,11 @@ public class Producer implements Runnable {
             int start = i * SLICE_SIZE;
             int end = start + SLICE_SIZE - 1;
 
-            System.out.println("[Producer] putting indexes " + start + " to " + end);
+            //System.out.println("[Producer] putting indexes " + start + " to " + end);
 
             int[] slice = Arrays.copyOfRange(arr, start, end);
             queue.put(new SortingJob(slice));
-            System.out.println("Remaining capacity: " + queue.remainingCapacity());
+            //System.out.println("Remaining capacity: " + queue.remainingCapacity());
         }
         // Fill with kill signals to kill the consumers
         for (int i = 0; i < queue.size(); i++) {
