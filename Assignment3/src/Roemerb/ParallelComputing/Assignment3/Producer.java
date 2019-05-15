@@ -5,10 +5,9 @@ import java.util.concurrent.BlockingQueue;
 
 public class Producer implements Runnable {
 
-    private final BlockingQueue<int[]> queue;
+    private final BlockingQueue<SortingJob> queue;
     private final int[] arr;
     private final int SLICE_SIZE = 10000;
-    private final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
 
     @Override
     public void run() {
@@ -22,17 +21,21 @@ public class Producer implements Runnable {
     private void process() throws InterruptedException {
         for (int i = 0; i < Math.ceil(arr.length / SLICE_SIZE); i++) {
             int start = i * SLICE_SIZE;
-            int end = start + SLICE_SIZE;
+            int end = start + SLICE_SIZE - 1;
 
             System.out.println("[Producer] putting indexes " + start + " to " + end);
 
             int[] slice = Arrays.copyOfRange(arr, start, end);
-            queue.put(slice);
+            queue.put(new SortingJob(slice));
             System.out.println("Remaining capacity: " + queue.remainingCapacity());
+        }
+        // Fill with kill signals to kill the consumers
+        for (int i = 0; i < queue.size(); i++) {
+            queue.put(new SortingJob(true));
         }
     }
 
-    public Producer(BlockingQueue<int[]> queue, int[] arr) {
+    public Producer(BlockingQueue<SortingJob> queue, int[] arr) {
         this.queue = queue;
         this.arr = arr;
     }

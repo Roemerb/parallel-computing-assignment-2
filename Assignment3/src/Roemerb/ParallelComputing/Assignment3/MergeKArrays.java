@@ -1,17 +1,22 @@
 package Roemerb.ParallelComputing.Assignment3;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class MergeKArrays
 {
-    public static int[] mergeKSortedArray(int[][] arr) {
+    public static int[] mergeKSortedArray(List<int[]> arr) {
         PriorityQueue<ArrayContainer> q = new PriorityQueue<ArrayContainer>();
         int total = 0;
 
-        for (int i = 0; i < arr.length; i++) {
-            q.add(new ArrayContainer(arr[i], 0));
-            total = total + arr[i].length;
+        Iterator<int[]> i = arr.iterator();
+        while (i.hasNext()) {
+            int[] sub = i.next();
+            q.add(new ArrayContainer(sub, 0));
+            total = total + sub.length;
         }
 
         int m = 0;
