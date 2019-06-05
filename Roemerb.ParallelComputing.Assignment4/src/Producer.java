@@ -6,10 +6,10 @@ public class Producer {
 
     private static ActiveMQ queueServer;
     private static Destination queue;
-    private int[] arr;
-    private int SLICE_SIZE;
+    private static int[] arr;
+    private static int SLICE_SIZE = 100;
 
-    private void sendMessages() {
+    public static void sendMessages() {
         for (int i = 0; i < Math.ceil((arr.length / SLICE_SIZE)); i++) {
             int start = i * SLICE_SIZE;
             int end = start + SLICE_SIZE - 1;
@@ -18,6 +18,7 @@ public class Producer {
             int[] slice = Arrays.copyOfRange(arr, start, end);
 
             String msg = sliceToMessage(slice);
+            System.out.println("Sending message to queue");
             queueServer.sendMessageOnQueue(
                     queueServer.getActiveMQSession(),
                     ActiveMQ.chunkQueue,
@@ -50,5 +51,9 @@ public class Producer {
         queueServer = new ActiveMQ();
         queueServer.connect();
         queue = queueServer.getQueue(ActiveMQ.chunkQueue);
+
+        arr = Utils.createTestSet(100000, 100000);
+
+        sendMessages();
     }
 }

@@ -1,37 +1,29 @@
+import javax.jms.*;
 import java.util.concurrent.BlockingQueue;
 
 public class Consumer {
-//
-    private final BlockingQueue<SortingJob> queue;
-//
-//    @Override
-//    public void run() {
-//        while (true) {
-//            try {
-//                SortingJob sj = queue.take();
-//                if (sj.kill) {
-//                    //System.out.println("Got KILL signal, dying");
-//                    break;
-//                }
-//                int[] arr = sj.slice;
-//                process(arr);
-//            } catch (InterruptedException e) {
-//                Thread.currentThread().interrupt();
-//            }
-//        }
-//    }
-//
-//    private void process(int[] take) {
-//        //System.out.println("[Consumer] Taken " + take.length + " elements to sort");
-//
-//        HeapSortSerial hss = new HeapSortSerial();
-//        int[] sorted = hss.sort(take);
-//        //System.out.println("[Consumer] Done");
-//
-//        HeapSortParallel.complete(sorted);
-//    }
 
-    public Consumer(BlockingQueue<SortingJob> queue) {
-        this.queue = queue;
+    private static ActiveMQ queueServer;
+    private static Destination queue;
+    private static Session sesh;
+    private static MessageConsumer consumer;
+
+    public static class ChunkListener implements MessageListener
+    {
+
+        @Override
+        public void onMessage(Message message)
+        {
+            System.out.println("Message received: " + message.toString());
+        }
+    }
+
+    public static void main(String[] args) throws JMSException
+    {
+        queueServer = new ActiveMQ();
+        queueServer.connect();
+        queue = queueServer.getQueue(ActiveMQ.chunkQueue);
+        consumer = queueServer.getActiveMQSession().createConsumer(queue);
+        consumer.setMessageListener(new ChunkListener());
     }
 }
