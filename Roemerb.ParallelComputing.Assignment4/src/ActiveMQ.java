@@ -35,13 +35,16 @@ public class ActiveMQ
         return activeMQSession.createQueue(queue);
     }
 
-    public void sendMessageOnQueue(Session session, String queue, String message)
+    public void sendSortMessageOnQueue(Session session, String queue, SortMessage message)
     {
         try
         {
             Destination dest = session.createQueue(queue);
             MessageProducer msgProd = session.createProducer(dest);
-            TextMessage msg = session.createTextMessage(message);
+
+            ObjectMessage msg = session.createObjectMessage();
+            msg.setObject(message);
+
             msgProd.send(msg);
         } catch (JMSException e)
         {

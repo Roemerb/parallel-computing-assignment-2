@@ -1,3 +1,6 @@
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.TextMessage;
 import java.util.Random;
 
 public class Utils {
@@ -73,5 +76,46 @@ public class Utils {
         }
 
         return output;
+    }
+
+    /**
+     * Convert a
+     *
+     * @param msg
+     * @param div
+     * @return
+     * @throws JMSException
+     */
+    public static int[] queueMessageToIntArr(Message msg, String div) throws JMSException
+    {
+        TextMessage txtMsg = (TextMessage) msg;
+        String[] str = txtMsg.getText().split(div);
+        int[] out = new int[str.length];
+
+        for (int i = 0; i < str.length; i++)
+        {
+            out[i] = Integer.parseInt(str[i]);
+        }
+
+        return out;
+    }
+
+    public static String arrToMessage(int[] slice)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < slice.length; i++)
+        {
+            if ((i-1) == slice.length)
+            {
+                sb.append(slice[i]);
+            }
+            else
+            {
+                String t = slice[i]+",";
+                sb.append(t);
+            }
+        }
+
+        return sb.toString();
     }
 }

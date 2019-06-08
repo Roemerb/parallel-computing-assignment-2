@@ -33,7 +33,7 @@ public class HeapSortParallel extends HeapSortSerial {
 //        BlockingQueue<SortingJob> queue = new LinkedBlockingQueue<>(QUEUE_SIZE);
 //
 //        Thread producerThread = new Thread(new Producer(queue, arr));
-//        Thread consumerThread = new Thread(new Consumer(queue));
+//        Thread consumerThread = new Thread(new SortConsumer(queue));
 //
 //        producerThread.start();
 //        consumerThread.start();

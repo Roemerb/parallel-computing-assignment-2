@@ -6,19 +6,19 @@ import java.util.PriorityQueue;
 
 public class MergeKArrays
 {
-    public static int[] mergeKSortedArray(List<int[]> arr) {
+    public static int[] mergeKSortedArray(List<SortMessage> chunk) {
         PriorityQueue<ArrayContainer> q = new PriorityQueue<ArrayContainer>();
         int total = 0;
 
-        Iterator<int[]> i = arr.iterator();
-        while (i.hasNext()) {
-            int[] sub = i.next();
+        for (SortMessage msg : chunk)
+        {
+            int[] sub = msg.getArr();
             q.add(new ArrayContainer(sub, 0));
             total = total + sub.length;
         }
 
         int m = 0;
-        int result[] = new int[total];
+        int[] result = new int[total];
 
         while (!q.isEmpty()) {
             ArrayContainer ac = q.poll();

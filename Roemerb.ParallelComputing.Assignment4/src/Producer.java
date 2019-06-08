@@ -1,6 +1,10 @@
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.UUID;
 
 public class Producer {
 
@@ -10,41 +14,59 @@ public class Producer {
     private static int SLICE_SIZE = 100;
 
     public static void sendMessages() {
-        for (int i = 0; i < Math.ceil((arr.length / SLICE_SIZE)); i++) {
+        int slices = (int) Math.ceil(arr.length /  SLICE_SIZE);
+        String jobID = generateJobID();
+
+        for (int i = 0; i < slices; i++) {
             int start = i * SLICE_SIZE;
             int end = start + SLICE_SIZE - 1;
 
 
             int[] slice = Arrays.copyOfRange(arr, start, end);
 
-            String msg = sliceToMessage(slice);
+            SortMessage sortMessage = new SortMessage();
+            sortMessage.setJobId(jobID);
+            sortMessage.setTotalParts(slices);
+            sortMessage.setPart(i+1);
+            sortMessage.setArr(slice);
+
             System.out.println("Sending message to queue");
-            queueServer.sendMessageOnQueue(
+            queueServer.sendSortMessageOnQueue(
                     queueServer.getActiveMQSession(),
                     ActiveMQ.chunkQueue,
-                    msg
+                    sortMessage
             );
         }
     }
 
-    private static String sliceToMessage(int[] slice)
+    public static String generateJobID()
     {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < slice.length; i++)
+        MessageDigest salt = null;
+        String digest = "";
+        try
         {
-            if ((i-1) == slice.length)
-            {
-                sb.append(slice[i]);
-            }
-            else
-            {
-                String t = slice[i]+",";
-                sb.append(t);
-            }
+            salt = MessageDigest.getInstance("SHA-256");
+            salt.update(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+            digest = bytesToHex(salt.digest());
+        } catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
         }
 
-        return sb.toString();
+        return digest;
     }
+
+    private static String bytesToHex(byte[] hashInBytes) {
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < hashInBytes.length; i++) {
+            sb.append(Integer.toString((hashInBytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
+
+    }
+
+
 
     public static void main(String[] args) throws JMSException
     {
