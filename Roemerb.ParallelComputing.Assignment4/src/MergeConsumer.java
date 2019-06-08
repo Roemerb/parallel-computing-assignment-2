@@ -54,7 +54,13 @@ public class MergeConsumer
             // Cast to SortMessage
             if (message instanceof ObjectMessage) {
                 objMessage = (ObjectMessage) message;
-                sortMsg = (SortMessage) objMessage;
+                try
+                {
+                    sortMsg = (SortMessage) objMessage.getObject();
+                } catch (JMSException e)
+                {
+                    e.printStackTrace();
+                }
             }
 
             return sortMsg;
@@ -105,7 +111,7 @@ public class MergeConsumer
         sort = new HeapSortSerial();
         queueServer = new ActiveMQ();
         queueServer.connect();
-        queue = queueServer.getQueue(ActiveMQ.chunkQueue);
+        queue = queueServer.getQueue(ActiveMQ.sortedQueue);
         consumer = queueServer.getActiveMQSession().createConsumer(queue);
         consumer.setMessageListener(new MergeConsumer.SortedChunkListener());
         queueServer.getActiveMQCon().start();

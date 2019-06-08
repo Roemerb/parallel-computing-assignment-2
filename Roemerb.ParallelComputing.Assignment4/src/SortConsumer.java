@@ -35,7 +35,13 @@ public class SortConsumer
             // Cast to SortMessage
             if (message instanceof ObjectMessage) {
                 objMessage = (ObjectMessage) message;
-                sortMsg = (SortMessage) objMessage;
+                try
+                {
+                    sortMsg = (SortMessage) objMessage.getObject();
+                } catch (JMSException e)
+                {
+                    e.printStackTrace();
+                }
             }
 
             // Update the embedded array to a sorted version
