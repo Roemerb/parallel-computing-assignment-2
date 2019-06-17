@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment4;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;

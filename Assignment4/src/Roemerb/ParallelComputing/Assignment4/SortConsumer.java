@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment4;
+
 import javax.jms.*;
 
 @SuppressWarnings("ALL")
@@ -8,10 +10,15 @@ public class SortConsumer
     private static Session sesh;
     private static MessageConsumer consumer;
 
+    public static long measurementStart;
+
     private static HeapSortSerial sort;
 
     public static class ChunkListener implements MessageListener
     {
+
+        public static final int noOfElementsToMeasure = 20000;
+        public static int seen = 0;
 
         @Override
         public void onMessage(Message message)
@@ -20,6 +27,15 @@ public class SortConsumer
             acknowledgeMessage(message);
             SortMessage sorted = this.sortReceivedMessage(message);
             sendSortedArrayOnSortedQueue(sorted);
+
+            seen++;
+            if (seen == noOfElementsToMeasure)
+            {
+                long end = System.nanoTime();
+
+                long timeInMs = ((end-measurementStart)/1000)/1000;
+                System.out.print(String.format("Took %dms\n", timeInMs));
+            }
         }
 
         /**
@@ -91,5 +107,7 @@ public class SortConsumer
         consumer = queueServer.getActiveMQSession().createConsumer(queue);
         consumer.setMessageListener(new ChunkListener());
         queueServer.getActiveMQCon().start();
+
+        measurementStart = System.nanoTime();
     }
 }

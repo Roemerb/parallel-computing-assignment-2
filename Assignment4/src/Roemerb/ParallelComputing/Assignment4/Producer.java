@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment4;
+
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import java.nio.charset.StandardCharsets;
@@ -13,13 +15,13 @@ public class Producer {
     private static int[] arr;
     private static int SLICE_SIZE = 100;
 
-    public static void sendMessages() {
-        int slices = (int) Math.ceil(arr.length /  SLICE_SIZE);
+    public static void sendMessages(int sliceSize) {
+        int slices = (int) Math.ceil(arr.length /  sliceSize);
         String jobID = generateJobID();
 
         for (int i = 0; i < slices; i++) {
-            int start = i * SLICE_SIZE;
-            int end = start + SLICE_SIZE - 1;
+            int start = i * sliceSize;
+            int end = start + sliceSize - 1;
 
 
             int[] slice = Arrays.copyOfRange(arr, start, end);
@@ -30,7 +32,7 @@ public class Producer {
             sortMessage.setPart(i+1);
             sortMessage.setArr(slice);
 
-            System.out.println("Sending message to queue");
+            //System.out.println("Sending message to queue");
             queueServer.sendSortMessageOnQueue(
                     queueServer.getActiveMQSession(),
                     ActiveMQ.chunkQueue,
@@ -66,8 +68,6 @@ public class Producer {
 
     }
 
-
-
     public static void main(String[] args) throws JMSException
     {
         queueServer = new ActiveMQ();
@@ -76,6 +76,28 @@ public class Producer {
 
         arr = Utils.createTestSet(100000, 100000);
 
-        sendMessages();
+
+        //sendMessages(SLICE_SIZE);
+
+        benchMarkProducer(1000000, 1000000, 50);
+        //benchMarkProducer(1000, 1000, 1);
+        //benchMarkProducer(10000, 10000, 10);
+        //benchMarkProducer(100000, 100000, 100);
+        //benchMarkProducer(1000000, 1000000, 1000);
+        //benchMarkProducer(5000000, 5000000, 5000);
+        //benchMarkProducer(10000000, 10000000, 10000);
+    }
+
+    public static void benchMarkProducer(int n, int max, int sliceSize)
+    {
+        int[] arr = Utils.createTestSet(n, max);
+        Producer.arr = arr;
+
+        long start = System.nanoTime();
+        sendMessages(sliceSize);
+        long end = System.nanoTime();
+        long tookMs = ((end-start)/1000)/1000;
+
+        System.out.print(String.format("Took %dms\n",tookMs));
     }
 }

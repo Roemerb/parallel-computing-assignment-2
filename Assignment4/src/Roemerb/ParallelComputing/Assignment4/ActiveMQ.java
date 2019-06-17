@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment4;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
@@ -14,6 +16,7 @@ public class ActiveMQ
     public void connect()
     {
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(serverUrl);
+        ((ActiveMQConnectionFactory) connectionFactory).setTrustAllPackages(true);
         try
         {
             Connection con = connectionFactory.createConnection();
@@ -51,7 +54,7 @@ public class ActiveMQ
             System.out.println("Failed to sent message: '" + e.getMessage() + "'");
         }
 
-        System.out.println("Sent message: '" + message + "'");
+        //System.out.println("Sent message: '" + message + "'");
     }
 
     public Connection getActiveMQCon()

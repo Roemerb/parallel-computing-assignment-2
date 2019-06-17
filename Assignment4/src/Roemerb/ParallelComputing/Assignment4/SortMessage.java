@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment4;
+
 import java.io.Serializable;
 
 public class SortMessage implements Serializable

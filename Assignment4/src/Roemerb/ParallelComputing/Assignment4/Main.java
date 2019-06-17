@@ -1,4 +1,4 @@
-package Roemerb.ParallelComputing.Assignment3;
+package Roemerb.ParallelComputing.Assignment4;
 
 public class Main {
 
@@ -27,6 +27,6 @@ public class Main {
         hsp.sort(arr);
         long endTime = System.nanoTime();
         long totalTimeMs = ((endTime - startTime)/1000);
-        System.out.println(String.format("%d\t\t\t%d\t\t\t%d", n, totalTimeMs, (totalTimeMs/1000)));
+        System.out.print(String.format("%d\t\t\t%d\t\t\t%d", n, totalTimeMs, (totalTimeMs/1000)));
     }
 }

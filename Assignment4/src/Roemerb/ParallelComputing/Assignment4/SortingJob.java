@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment4;
+
 public class SortingJob {
     public int[] slice = {};
     public boolean kill = false;

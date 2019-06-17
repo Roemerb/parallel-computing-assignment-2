@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment4;
+
 import javax.jms.*;
 import java.util.*;
 

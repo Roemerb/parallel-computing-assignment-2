@@ -1,3 +1,5 @@
+package Roemerb.ParallelComputing.Assignment4;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
